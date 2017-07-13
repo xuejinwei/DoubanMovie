@@ -30,7 +30,7 @@ public class LoggerInterceptor implements Interceptor {
             } else if (message.contains("<!DOCTYPE html>")) {
                 Logger.d(message);
             } else {
-                Log.i("Api_head", message);
+                Log.i(TAG, message);
             }
         });
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

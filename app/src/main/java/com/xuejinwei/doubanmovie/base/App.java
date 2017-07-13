@@ -2,7 +2,7 @@ package com.xuejinwei.doubanmovie.base;
 
 import android.app.Application;
 
-import com.orhanobut.logger.DiskLogAdapter;
+import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -17,7 +17,7 @@ public class App extends Application{
     public void onCreate() {
         super.onCreate();
         instance = this;
-        Logger.addLogAdapter(new DiskLogAdapter());
+        Logger.addLogAdapter(new AndroidLogAdapter());
     }
 
     public static App getInstance() {
