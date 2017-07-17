@@ -1,23 +1,24 @@
 package com.xuejinwei.doubanmovie;
 
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
 import com.xuejinwei.doubanmovie.base.BaseActivity;
 import com.xuejinwei.doubanmovie.utils.ToastUtil;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 public class MainActivity extends BaseActivity {
 
-    @BindView(R.id.tv) TextView mTv;
+
+    private Toolbar  mToolbar;
+    private TextView mTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        initView();
 
         mTv.setOnClickListener(v -> {
             exec(Api().getMovieInTheaters(0, 20), o -> {
@@ -29,5 +30,10 @@ public class MainActivity extends BaseActivity {
                 return false;
             });
         });
+    }
+
+    private void initView() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mTv = (TextView) findViewById(R.id.tv);
     }
 }

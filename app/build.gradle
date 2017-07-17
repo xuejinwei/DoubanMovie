@@ -32,9 +32,6 @@ dependencies {
     compile "com.android.support:palette-v7:${rootProject.supportVersion}"
     compile "com.android.support:recyclerview-v7:${rootProject.supportVersion}"
 
-    compile 'com.jakewharton:butterknife:8.7.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
-
     //okhttp 相关
     compile "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
     compile "com.squareup.okhttp3:okhttp-urlconnection:$rootProject.okhttpVersion"
