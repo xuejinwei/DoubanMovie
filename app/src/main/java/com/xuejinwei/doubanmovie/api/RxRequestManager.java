@@ -3,9 +3,10 @@ package com.xuejinwei.doubanmovie.api;
 
 import com.xuejinwei.doubanmovie.api.exceptions.ServerException;
 
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+
 
 /**
  * Created by xuejinwei on 2017/5/23.
@@ -28,7 +29,7 @@ public interface RxRequestManager {
      * 通用retrofit request，只处理正确结果callback
      * 逻辑错误、网络错误默认处理
      */
-    <T> void exec(Observable<T> request, Action1<T> resultCallback);
+    <T> void exec(Observable<T> request, Consumer<T> resultCallback);
 
     /**
      * Run a common retrofit request
@@ -40,8 +41,8 @@ public interface RxRequestManager {
      * @param serverCallback  {@link ServerException} 服务器逻辑错误处理callback ，包含status 和msg
      * @param <T>            成功返回结果
      */
-    <T> void exec(Observable<T> request, Action1<T> resultCallback,
-                  Action1<ServerException> serverCallback);
+    <T> void exec(Observable<T> request, Consumer<T> resultCallback,
+                  Consumer<ServerException> serverCallback);
 
 
     /**
@@ -53,6 +54,6 @@ public interface RxRequestManager {
      * @param localErrorCallback 本地错误回调：网络、服务器异常、数据解析错误callback。如果返回true，则说明自己完全处理该错误，不执行默认错误处理；如果返回false，则说明还需要默认底层的默认错误处理
      * @param <T>            成功返回结果
      */
-    <T> void exec(Observable<T> request, Action1<T> resultCallback,
-                  Action1<ServerException> serverCallback, Func1<Throwable, Boolean> localErrorCallback);
+    <T> void exec(Observable<T> request, Consumer<T> resultCallback,
+                  Consumer<ServerException> serverCallback, Function<Throwable, Boolean> localErrorCallback);
 }

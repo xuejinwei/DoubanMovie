@@ -9,10 +9,10 @@ import com.xuejinwei.doubanmovie.api.RxRequestManager;
 import com.xuejinwei.doubanmovie.api.RxUtil;
 import com.xuejinwei.doubanmovie.api.exceptions.ServerException;
 
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 /**
  * Created by xuejinwei on 2017/7/13.
@@ -26,23 +26,23 @@ public class BaseActivity extends AppCompatActivity implements RxRequestManager{
      * Retrofit & RxJava
      */
 
-    protected CompositeSubscription mSubscriptions = new CompositeSubscription();
+    protected CompositeDisposable mDisposable = new CompositeDisposable();
 
 
-    public <T> void exec(Observable<T> request, Action1<T> resultCallback) {
-        RxUtil.exec(mSubscriptions, request, resultCallback);
+    public <T> void exec(Observable<T> request, Consumer<T> resultCallback) {
+        RxUtil.exec(mDisposable, request, resultCallback);
     }
 
-    public <T> void exec(Observable<T> request, Action1<T> resultCallback,
-                         Action1<ServerException> serverCallback) {
-        RxUtil.exec(mSubscriptions, request, resultCallback, serverCallback);
+    public <T> void exec(Observable<T> request, Consumer<T> resultCallback,
+                         Consumer<ServerException> serverCallback) {
+        RxUtil.exec(mDisposable, request, resultCallback, serverCallback);
     }
 
     @Override
-    public <T> void exec(Observable<T> request, Action1<T> resultCallback,
-                         Action1<ServerException> serverCallback,
-                         Func1<Throwable, Boolean> localErrorCallback) {
-        RxUtil.exec(mSubscriptions, request, resultCallback, serverCallback, localErrorCallback);
+    public <T> void exec(Observable<T> request, Consumer<T> resultCallback,
+                         Consumer<ServerException> serverCallback,
+                         Function<Throwable, Boolean> localErrorCallback) {
+        RxUtil.exec(mDisposable, request, resultCallback, serverCallback, localErrorCallback);
     }
 
     public ApiWrapper ApiWrapper() {

@@ -1,8 +1,8 @@
 package com.xuejinwei.doubanmovie.api;
 
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
 
 /**
  * Created by xuejinwei on 2017/7/13.

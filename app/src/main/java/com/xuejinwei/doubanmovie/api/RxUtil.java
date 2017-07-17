@@ -2,12 +2,12 @@ package com.xuejinwei.doubanmovie.api;
 
 import com.xuejinwei.doubanmovie.api.exceptions.ServerException;
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by xuejinwei on 2017/5/23.
@@ -16,24 +16,24 @@ import rx.subscriptions.CompositeSubscription;
 
 public class RxUtil {
 
-    public static <T> void exec(CompositeSubscription mSubscriptions, Observable<T> request, Action1<T> resultCallback) {
-        exec(mSubscriptions, request, resultCallback, RequestHandler::handleActionError);
+    public static <T> void exec(CompositeDisposable mDisposable, Observable<T> request, Consumer<T> resultCallback) {
+        exec(mDisposable, request, resultCallback, RequestHandler::handleActionError);
     }
 
-    public static <T> void exec(CompositeSubscription mSubscriptions, Observable<T> request, Action1<T> resultCallback,
-                                Action1<ServerException> serverCallback) {
-        exec(mSubscriptions, request, resultCallback, serverCallback,throwable -> false);
+    public static <T> void exec(CompositeDisposable mDisposable, Observable<T> request, Consumer<T> resultCallback,
+                                Consumer<ServerException> serverCallback) {
+        exec(mDisposable, request, resultCallback, serverCallback,throwable -> false);
     }
 
-    public static <T> void exec(CompositeSubscription mSubscriptions, Observable<T> request, Action1<T> resultCallback,
-                                Action1<ServerException> serverCallback, Func1<Throwable, Boolean> localErrorCallback) {
-        mSubscriptions.add(network(request)
+    public static <T> void exec(CompositeDisposable mDisposable, Observable<T> request, Consumer<T> resultCallback,
+                                Consumer<ServerException> serverCallback, Function<Throwable, Boolean> localErrorCallback) {
+        mDisposable.add(network(request)
                 .subscribe(resultCallback, throwable -> {
                     if (throwable instanceof ServerException) {
-                        serverCallback.call((ServerException) throwable);
+                        serverCallback.accept((ServerException) throwable);
                         return;
                     }
-                    if (!localErrorCallback.call(throwable)) {
+                    if (!localErrorCallback.apply(throwable)) {
                         RequestHandler.handleError(throwable);
                     }
                 }));
