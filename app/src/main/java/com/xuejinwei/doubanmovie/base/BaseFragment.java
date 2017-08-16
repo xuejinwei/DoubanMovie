@@ -1,6 +1,6 @@
 package com.xuejinwei.doubanmovie.base;
 
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 
 import com.xuejinwei.doubanmovie.api.Api;
 import com.xuejinwei.doubanmovie.api.ApiManager;
@@ -15,15 +15,16 @@ import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
 /**
- * Created by xuejinwei on 2017/7/13.
+ * Created by xuejinwei on 2017/8/16.
  * Email:xuejinwei@outlook.com
  */
 
-public class BaseActivity extends AppCompatActivity implements RxRequestManager {
+public class BaseFragment extends Fragment implements RxRequestManager{
+
 
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         if (null != mDisposable) {
             mDisposable.clear();
         }
